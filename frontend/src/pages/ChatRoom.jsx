@@ -15,29 +15,31 @@ const ChatRoom = () => {
       console.log("socket change  ");
       socket.on('roomMessage', (data)=>{
         console.log("message", data);
-        console.log(allChats.current);
         let node = document.createElement('p');
         let textNode = document.createTextNode(data);
         node.appendChild(textNode);
         allChats.current.appendChild(node);
         setMessageValue("");
-        // alert(data);
       })
-      // console.log('asas');
     }, [socket])
-  
-    
-  
+
+
+    const handleChange = (e)=>{
+        setMessageValue(e.target.value);
+    };
+
+    useEffect(()=>{
+        console.log(messageValue);
+    }, [])
   
     const sendMessage = ()=>{
-      console.log("message value: " , messageValue);
       socket.emit('message', messageValue);
     }
   
     return (
       <div>
         <ul ref={allChats}></ul>
-        <input placeholder='message...' value={messageValue} onChange={(e)=>{setMessageValue(e.target.value)}}></input>
+        <input placeholder='message...' value={messageValue} onChange={handleChange}></input>
         <button onClick={sendMessage}>Send</button>
       </div>
     )
