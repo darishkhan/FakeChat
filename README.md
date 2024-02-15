@@ -37,7 +37,7 @@ Steps to run it locally:
    npm install
    ```
 8. ```
-   nodemon ./index.js
+   node ./index.js
    ```
    
 Open http://localhost:5000/
