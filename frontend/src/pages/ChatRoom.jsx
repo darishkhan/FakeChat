@@ -13,6 +13,8 @@ const ChatRoom = () => {
   const [socketid, setSocketid] = useState("");
   const location = useLocation();
 
+  const butref = useRef();
+
   // const postUser = async(id)=>{
   //   const response = await axios.post('http://localhost:5000/api/v1/newuser', {id:id, displayName: location.state.displayName});
   //   console.log(response);
@@ -65,16 +67,24 @@ const ChatRoom = () => {
     console.log(messageValue);
   }, [messageValue]);
 
+  const checkKey = (e)=>{
+    if(e.key==="Enter")
+    {
+      butref.current.click();
+      console.log("sjkd");
+    }
+  }
+
   return (
     <>
       <div className="grid grid-cols-12 min-h-screen  bg-yellow-200 p-5 space-x-1">
         <div className="col-span-4 h-120 border-2 border-black rounded-lg ">
           <OnlineUsers></OnlineUsers>
         </div>
-        <div className="col-span-8  h-full border-2 border-black rounded-lg">
+        <div className="col-span-8  h-full border-2 border-black bg-green-200 rounded-lg">
           <div className="grid grid-rows-12 p-5 h-full">
-            <div className="h-100 row-span-11 border-2 border-black mb-2 rounded-lg">
-              <ul className="space-y-1  p-2 max-h-full overflow-y-scroll no-scrollbar">
+            <div className="h-100 row-span-11 border-2 border-black bg-blue-200 mb-2 rounded-lg">
+              <ul className="space-y-1  p-2 max-h-full bg-blue-200 overflow-y-scroll no-scrollbar">
                 {messages &&
                   messages.map((message) => {
                     return (
@@ -96,13 +106,15 @@ const ChatRoom = () => {
               <div className="grid grid-cols-12 ">
                 <div className="col-span-10 pr-2">
                   <input
-                    className="w-full p-2 rounded-xl"
+                    className="w-full  p-2 rounded-xl"
                     placeholder="message..."
                     value={messageValue.message ? messageValue.message : ""}
+                    onKeyUp={checkKey}
                     onChange={handleChange}
-                  ></input>
+                    ></input>
                 </div>
                 <button
+                    ref={butref}
                   className="col-span-2 bg-blue-500 text-white font-semibold py-2 rounded-lg"
                   onClick={sendMessage}
                 >
