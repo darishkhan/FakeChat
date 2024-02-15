@@ -1,16 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import OnlineUsers from "../components/OnlineUsers";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Message from "../components/Message";
 
 const socket = io.connect("http://localhost:5000");
 
 const ChatRoom = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  if(!location.state)
+  {
+    navigate('/');
+  }
+  
   const [messageValue, setMessageValue] = useState({});
   const [messages, setMessages] = useState([]);
   const [socketid, setSocketid] = useState("");
-  const location = useLocation();
+
   const butref = useRef();
 
   useEffect(() => {

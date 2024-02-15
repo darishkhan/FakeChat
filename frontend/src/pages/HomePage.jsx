@@ -54,7 +54,7 @@ const HomePage = () => {
           ref={butref}
           onClick={joinRoom}
         >
-          Join Room
+          Start Chatting
         </button>
 
         <div hidden={!displayNameInvalid}>
