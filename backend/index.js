@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require('path');
 const app = express();
 
 const { Server } = require("socket.io");
@@ -7,7 +8,21 @@ const http = require("http");
 const cors = require("cors");
 const PORT = 5000;
 
+
+const _dirname = path.dirname("");
+const buildpath = path.join(_dirname, "../frontend/dist");
+app.use(express.static(buildpath));
 app.use(cors());
+app.get("/*",function(req,res){
+    res.sendFile(
+        path.join(__dirname,"../frontend/dist/index.html"),
+        function(err){
+            if(err){
+                res.status(500).send(err);
+            }
+        } 
+    );
+})
 
 const httpServer = http.createServer(app);
 
