@@ -1,6 +1,6 @@
 Hey there!
 
-Demo :
+# Demo :
 
 Shad's Chat:
 <img width="959" alt="image" src="https://github.com/darishkhan/FakeChat/assets/93848997/012a010e-89cd-4fef-a669-c75e04f7c697">
@@ -41,6 +41,13 @@ Steps to run it locally:
    ```
    
 Open http://localhost:5000/
+
+---
+# Current Use Case:
+
+Tired of being ignored from your crush??
+
+No worries, disguise yourself as your crush and reply to your own self ;D
 
 ---
 
