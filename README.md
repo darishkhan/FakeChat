@@ -47,4 +47,3 @@ Open http://localhost:5000/
 # NOTE:
 - No database is used and all chats are broadcasted at sending and stored locally, thus you can't see previous messages.
 - 'Online Users' tab is empty and it's code is removed as no database is being used.
-   
