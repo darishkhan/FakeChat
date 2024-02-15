@@ -14,8 +14,6 @@ Darish's Chat:
 
 
 
-
-
 Steps to run it locally:
 1. ```
    git clone https://github.com/darishkhan/FakeChat.git
@@ -24,24 +22,25 @@ Steps to run it locally:
    cd FakeChat
    ```
 3. ```
-   cd backend
+   cd frontend
    ```
 4. ```
    npm install
    ```
 5. ```
-   nodemon ./index.js
+   npm run build
    ```
 6. ```
-   cd frontend
+   cd ../backend
    ```
 7. ```
    npm install
    ```
 8. ```
-   npm run dev
+   nodemon ./index.js
    ```
-Open http://localhost:5173/
+   
+Open http://localhost:5000/
 
 ---
 
