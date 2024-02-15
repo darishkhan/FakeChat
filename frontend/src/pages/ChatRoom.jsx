@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import OnlineUsers from "../components/OnlineUsers";
 import { useLocation } from "react-router-dom";
 import Message from "../components/Message";
+import axios from "axios";
 
 const socket = io.connect("http://localhost:5000");
 
@@ -12,34 +13,42 @@ const ChatRoom = () => {
   const [socketid, setSocketid] = useState("");
   const location = useLocation();
 
-  socket.on("connect", () => {
-    setSocketid(socket.id);
+  // const postUser = async(id)=>{
+  //   const response = await axios.post('http://localhost:5000/api/v1/newuser', {id:id, displayName: location.state.displayName});
+  //   console.log(response);
+  // };
+
+  useEffect(()=>{
+    socket.emit('sendsocketid');
+    console.log("emittes");
+  }, [])
+
+  socket.on("yoursocketid", (id) => {
+    setSocketid(id);
+    // postUser(socket.id);
   });
 
-  // useEffect(() => {
-    // console.log("socket change  ", socket, messages);
-    socket.on("roomMessage", (data) => {
+  useEffect(()=>{
+    console.log(socketid);
+  }, [socketid]);
 
-      // console.log("```````````````",messages, data);
-      // let updatedMessages = [...messages];
-      // console.log(messages===updatedMessages, messages, updatedMessages);
-      // updatedMessages.push(data);
-      // let updatedMessages = messages.concat(data);
-      setMessages([...messages, data]);
+  // socket.on("users", (users)=>{
+  //   console.log("users aaye", users);
+  // });
 
-      setMessageValue("");
-      // console.log("message", data);
-    });
-  // }, [socket]);
+  socket.on("roomMessage", (data) => {
+    setMessages([...messages, data]);
+    setMessageValue("");
+  });
 
-  const handleChange = (e='#') => {
-    if(e==='#'){
+  const handleChange = (e = "#") => {
+    if (e === "#") {
       setMessageValue(messageValue);
-    }
-    else{
+    } else {
       setMessageValue({
-        messageId: socketid + '%$' + messages.length,
+        messageId: socketid + "%$" + messages.length,
         message: e.target.value,
+        displayName:location.state.displayName
       });
     }
   };
@@ -50,7 +59,6 @@ const ChatRoom = () => {
 
   useEffect(() => {
     console.log("messages..", messages);
-    // handleChange();
   }, [messages]);
 
   useEffect(() => {
@@ -65,13 +73,23 @@ const ChatRoom = () => {
         </div>
         <div className="col-span-8  h-full border-2 border-black rounded-lg">
           <div className="grid grid-rows-12 p-5 h-full">
-            <div className="h-100 row-span-11 border-2 border-black mb-2">
-              <ul className="space-y-1   max-h-full overflow-y-scroll no-scrollbar">
-                {messages && messages.map((message) => {
-                  {console.log('renderd', message)};
-                  // return <p key={message.messageId}>{message.message}</p>;
-                  return <div key={message.messageId} ><Message message={message.message} messageId={message.messageId}></Message></div>
-                })}
+            <div className="h-100 row-span-11 border-2 border-black mb-2 rounded-lg">
+              <ul className="space-y-1  p-2 max-h-full overflow-y-scroll no-scrollbar">
+                {messages &&
+                  messages.map((message) => {
+                    return (
+                      <div key={message.messageId}>
+                        <Message
+                          props = {{
+                            message: message.message,
+                            messageId: message.messageId,
+                            socketid: socketid,
+                            displayName: message.displayName
+                          }}
+                        ></Message>
+                      </div>
+                    );
+                  })}
               </ul>
             </div>
             <div>

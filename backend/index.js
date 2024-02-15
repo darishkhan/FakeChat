@@ -3,7 +3,7 @@ const app = express();
 
 const {Server} = require('socket.io');
 
-const {router, updateUsers} = require('./routes/api.js');
+// const {router, deleteUser} = require('./routes/api.js');
 const http = require('http');
 const cors = require('cors');
 const PORT = 5000;
@@ -20,16 +20,24 @@ const io = new Server(httpServer, {
     }
 });
 
+
+
 io.on('connection', (socket)=>{
     console.log("User connnected: ", socket.id);
-    updateUsers({displayName: socket.id});
+    socket.on('sendsocketid', ()=>{
+        socket.emit('yoursocketid', socket.id);
+    })
     socket.on('message', (data)=>{
         console.log("message sent");
         io.emit("roomMessage", data);
     })
+    socket.on('disconnect', (data)=>{
+        console.log("...", socket.id);
+    })
 });
 
-app.use('/api/v1', router);
+// app.use(express.json());
+// app.use('/api/v1', router);
 
   
 httpServer.listen(PORT, () => {
