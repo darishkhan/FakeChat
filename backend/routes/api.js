@@ -3,15 +3,12 @@
 // const fs = require('fs');
 // console.log(users);
 
-
-
-
-// const addUser = (newUser)=>{ 
+// const addUser = (newUser)=>{
 //     var users = [];
 //     fs.readFile(require.resolve('../users.txt'), 'utf-8', (err, data)=>{
 //         users = data;
 //         console.log(users);
-//         if(!users.includes(user=>user.id===newUser.id)) 
+//         if(!users.includes(user=>user.id===newUser.id))
 //         {
 //             users.push(newUser);
 //             fs.writeFile(require.resolve('../users.txt'), users);

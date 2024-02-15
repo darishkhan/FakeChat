@@ -3,7 +3,6 @@ import io from "socket.io-client";
 import OnlineUsers from "../components/OnlineUsers";
 import { useLocation } from "react-router-dom";
 import Message from "../components/Message";
-import axios from "axios";
 
 const socket = io.connect("http://localhost:5000");
 
@@ -12,31 +11,20 @@ const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
   const [socketid, setSocketid] = useState("");
   const location = useLocation();
-
   const butref = useRef();
 
-  // const postUser = async(id)=>{
-  //   const response = await axios.post('http://localhost:5000/api/v1/newuser', {id:id, displayName: location.state.displayName});
-  //   console.log(response);
-  // };
-
-  useEffect(()=>{
-    socket.emit('sendsocketid');
+  useEffect(() => {
+    socket.emit("sendsocketid");
     console.log("emittes");
-  }, [])
+  }, []);
 
   socket.on("yoursocketid", (id) => {
     setSocketid(id);
-    // postUser(socket.id);
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(socketid);
   }, [socketid]);
-
-  // socket.on("users", (users)=>{
-  //   console.log("users aaye", users);
-  // });
 
   socket.on("roomMessage", (data) => {
     setMessages([...messages, data]);
@@ -50,7 +38,7 @@ const ChatRoom = () => {
       setMessageValue({
         messageId: socketid + "%$" + messages.length,
         message: e.target.value,
-        displayName:location.state.displayName
+        displayName: location.state.displayName,
       });
     }
   };
@@ -67,13 +55,12 @@ const ChatRoom = () => {
     console.log(messageValue);
   }, [messageValue]);
 
-  const checkKey = (e)=>{
-    if(e.key==="Enter")
-    {
+  const checkKey = (e) => {
+    if (e.key === "Enter") {
       butref.current.click();
       console.log("sjkd");
     }
-  }
+  };
 
   return (
     <>
@@ -90,11 +77,11 @@ const ChatRoom = () => {
                     return (
                       <div key={message.messageId}>
                         <Message
-                          props = {{
+                          props={{
                             message: message.message,
                             messageId: message.messageId,
                             socketid: socketid,
-                            displayName: message.displayName
+                            displayName: message.displayName,
                           }}
                         ></Message>
                       </div>
@@ -111,10 +98,10 @@ const ChatRoom = () => {
                     value={messageValue.message ? messageValue.message : ""}
                     onKeyUp={checkKey}
                     onChange={handleChange}
-                    ></input>
+                  ></input>
                 </div>
                 <button
-                    ref={butref}
+                  ref={butref}
                   className="col-span-2 bg-blue-500 text-white font-semibold py-2 rounded-lg"
                   onClick={sendMessage}
                 >
