@@ -28,21 +28,29 @@ const httpServer = http.createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5000",
   },
 });
 
 io.on("connection", (socket) => {
   console.log("User connnected: ", socket.id);
+  io.emit('userCount', io.engine.clientsCount);
+
+  socket.on('sendusercount', ()=>{
+    socket.emit('userCount', io.engine.clientsCount);
+  })
   socket.on("sendsocketid", () => {
     socket.emit("yoursocketid", socket.id);
   });
+
   socket.on("message", (data) => {
     console.log("message sent");
     io.emit("roomMessage", data);
   });
+
   socket.on("disconnect", (data) => {
     console.log("...", socket.id);
+    io.emit('userCount', io.engine.clientsCount);
   });
 });
 

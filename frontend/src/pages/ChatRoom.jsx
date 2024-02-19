@@ -17,11 +17,14 @@ const ChatRoom = () => {
   const [messageValue, setMessageValue] = useState({});
   const [messages, setMessages] = useState([]);
   const [socketid, setSocketid] = useState("");
+  const [onlineUsers, setOnlineUsers] = useState(1);
 
   const butref = useRef();
+  const messageScrollRef = useRef();
 
   useEffect(() => {
     socket.emit("sendsocketid");
+    socket.emit("sendusercount");
     console.log("emittes");
   }, []);
 
@@ -37,6 +40,14 @@ const ChatRoom = () => {
     setMessages([...messages, data]);
     setMessageValue("");
   });
+
+  socket.on('userCount', (userCount)=>{
+    setOnlineUsers(userCount);
+  })
+
+  useEffect(()=>{
+    console.log("onlineusers", onlineUsers);
+  }, [onlineUsers])
 
   const handleChange = (e = "#") => {
     if (e === "#") {
@@ -56,6 +67,7 @@ const ChatRoom = () => {
 
   useEffect(() => {
     console.log("messages..", messages);
+    scrollToBottom();
   }, [messages]);
 
   useEffect(() => {
@@ -69,11 +81,15 @@ const ChatRoom = () => {
     }
   };
 
+  const scrollToBottom = () => {
+    messageScrollRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
   return (
     <>
       <div className="grid grid-cols-12 min-h-screen  bg-yellow-200 p-5 space-x-1">
         <div className="col-span-4 h-120 border-2 border-black rounded-lg ">
-          <OnlineUsers></OnlineUsers>
+          <OnlineUsers onlineUsers={onlineUsers}></OnlineUsers>
         </div>
         <div className="col-span-8  h-full border-2 border-black bg-green-200 rounded-lg">
           <div className="grid grid-rows-12 p-5 h-full">
@@ -94,6 +110,7 @@ const ChatRoom = () => {
                       </div>
                     );
                   })}
+                  <div ref={messageScrollRef} />
               </ul>
             </div>
             <div>
