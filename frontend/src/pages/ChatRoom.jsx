@@ -4,20 +4,20 @@ import OnlineUsers from "../components/OnlineUsers";
 import { useLocation, useNavigate } from "react-router-dom";
 import Message from "../components/Message";
 
-const socket = io.connect("");
+const socket = io.connect("http://localhost:5000");
 
 const ChatRoom = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  if(!location.state)
-  {
-    navigate('/');
+  if (!location.state) {
+    navigate("/");
   }
-  
+
   const [messageValue, setMessageValue] = useState({});
   const [messages, setMessages] = useState([]);
   const [socketid, setSocketid] = useState("");
   const [onlineUsers, setOnlineUsers] = useState(1);
+  const [typerName, setTyperName] = useState([]);
 
   const butref = useRef();
   const messageScrollRef = useRef();
@@ -38,16 +38,34 @@ const ChatRoom = () => {
 
   socket.on("roomMessage", (data) => {
     setMessages([...messages, data]);
-    setMessageValue("");
   });
 
-  socket.on('userCount', (userCount)=>{
+  socket.on("userCount", (userCount) => {
     setOnlineUsers(userCount);
-  })
+  });
+
+  socket.on("typing", (data) => {
+    console.log("haan typing");
+    setTyperName([...typerName, data]);
+  });
 
   useEffect(()=>{
+    console.log(typerName);
+  }, [typerName])
+
+  socket.on("notTyping", (data) => {
+    let arr = typerName;
+    arr = arr.filter((value)=>{value!=data});    
+    setTyperName(arr);
+  });
+
+  useEffect(() => {
+    console.log(typerName);
+  }, [typerName]);
+
+  useEffect(() => {
     console.log("onlineusers", onlineUsers);
-  }, [onlineUsers])
+  }, [onlineUsers]);
 
   const handleChange = (e = "#") => {
     if (e === "#") {
@@ -60,10 +78,28 @@ const ChatRoom = () => {
       });
     }
   };
+  
+  const handleFocus = ()=>{
+    console.log("typing")
+    socket.emit("typing", location.state.displayName);
+  }
+
+  const handleBlur = ()=>{
+    console.log("nottyping");
+    socket.emit("notTyping", location.state.displayName);
+  }
 
   const sendMessage = () => {
-    socket.emit("message", messageValue);
+    const date = new Date();
+    const messageTime = (date.getHours()<=9?'0'+date.getHours():date.getHours())+":"+(date.getMinutes()<=9?'0'+date.getMinutes():date.getMinutes())+(date.getHours()>=12?" pm":" am");
+    setMessageValue({...messageValue, messageTime: messageTime});
   };
+
+  if(messageValue.hasOwnProperty("messageTime"))
+  {
+    socket.emit("message", messageValue);
+    setMessageValue("");
+  }
 
   useEffect(() => {
     console.log("messages..", messages);
@@ -82,18 +118,23 @@ const ChatRoom = () => {
   };
 
   const scrollToBottom = () => {
-    messageScrollRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messageScrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>
       <div className="grid grid-cols-12 min-h-screen  bg-yellow-200 p-5 space-x-1">
         <div className="col-span-4 h-120 border-2 border-black rounded-lg ">
-          <OnlineUsers onlineUsers={onlineUsers}></OnlineUsers>
+          <OnlineUsers onlineUsers={onlineUsers} ></OnlineUsers>
         </div>
         <div className="col-span-8  h-full border-2 border-black bg-green-200 rounded-lg">
-          <div className="grid grid-rows-12 p-5 h-full">
+          <div className="grid grid-rows-12 p-5 h-full">          
             <div className="h-100 row-span-11 border-2 border-black bg-blue-200 mb-2 rounded-lg">
+            <div className="h-min bg-yellow-200 ">
+              {typerName.length>0 &&(
+                <div className="animate-bounce font-xs text-blue-600 font-blue pl-5"><span className="mx-auto">{typerName[0]} is typing...</span></div>
+              )}
+            </div>
               <ul className="space-y-1  p-2 max-h-full bg-blue-200 overflow-y-scroll no-scrollbar">
                 {messages &&
                   messages.map((message) => {
@@ -102,6 +143,7 @@ const ChatRoom = () => {
                         <Message
                           props={{
                             message: message.message,
+                            messageTime: message.messageTime,
                             messageId: message.messageId,
                             socketid: socketid,
                             displayName: message.displayName,
@@ -110,7 +152,7 @@ const ChatRoom = () => {
                       </div>
                     );
                   })}
-                  <div ref={messageScrollRef} />
+                <div ref={messageScrollRef} />
               </ul>
             </div>
             <div>
@@ -122,6 +164,8 @@ const ChatRoom = () => {
                     value={messageValue.message ? messageValue.message : ""}
                     onKeyUp={checkKey}
                     onChange={handleChange}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                   ></input>
                 </div>
                 <button

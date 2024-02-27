@@ -29,7 +29,7 @@ const OnlineUsers = ({onlineUsers}) => {
            <h1 className='my-5 mx-5 font-bold text-xl bg-green-200 rounded-lg p-2 text-center'>Users Online ({onlineUsers})</h1>
            <ul className='space-y-1 text-white'>
             <div>
-            <img className="w-full" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXI0ZDhnMjR1aXVjazJka2ppem1hOThlaDVweG84Y3BxM3JwbDRncCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/MfnJATkfrAIBG/giphy.gif" width="480" height="480"  class="giphy-embed" allowFullScreen></img>
+            <img className="w-full" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXI0ZDhnMjR1aXVjazJka2ppem1hOThlaDVweG84Y3BxM3JwbDRncCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/MfnJATkfrAIBG/giphy.gif" width="480" height="480"  allowFullScreen></img>
             </div>
 
            {/* {onlineUsers && onlineUsers.map((onlineUser)=>{ 

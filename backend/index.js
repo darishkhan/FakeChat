@@ -51,7 +51,18 @@ io.on("connection", (socket) => {
   socket.on("disconnect", (data) => {
     console.log("...", socket.id);
     io.emit('userCount', io.engine.clientsCount);
+    socket.on("notTyping", (displayName)=>{
+      io.emit("notTyping", displayName);
+    });
   });
+
+  socket.on("typing", (displayName)=>{
+    socket.broadcast.emit("typing", displayName);
+  });
+  socket.on("notTyping", (displayName)=>{
+    socket.broadcast.emit("notTyping", displayName);
+  });
+
 });
 
 httpServer.listen(PORT, () => {
