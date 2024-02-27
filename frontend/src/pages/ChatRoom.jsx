@@ -4,7 +4,7 @@ import OnlineUsers from "../components/OnlineUsers";
 import { useLocation, useNavigate } from "react-router-dom";
 import Message from "../components/Message";
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("");
 
 const ChatRoom = () => {
   const location = useLocation();
