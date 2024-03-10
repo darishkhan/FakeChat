@@ -1,16 +1,20 @@
 Hey there!
-Deployed link: https://fakechat-meg2.onrender.com
+Deployed link: https://fakechat-meg2.onrender.com 
+(Wait for about 30 seconds for the server to start after you first hit the server as the server spins off after every 15 minutes of inactivity.)
 
 # Demo :
 
 Shad's Chat:
-<img width="959" alt="image" src="https://github.com/darishkhan/FakeChat/assets/93848997/012a010e-89cd-4fef-a669-c75e04f7c697">
+<img width="960" alt="Screenshot 2024-03-10 191232" src="https://github.com/darishkhan/FakeChat/assets/93848997/6fd304a1-a5cd-40f6-a196-14099e435829">
+
 
 Sanya's Chat:
-<img width="960" alt="image" src="https://github.com/darishkhan/FakeChat/assets/93848997/2b105d2c-d4b8-4fc1-9fbb-a6803251866f">
+<img width="960" alt="Screenshot 2024-03-10 191242" src="https://github.com/darishkhan/FakeChat/assets/93848997/9acc71c4-4ad2-43af-bba2-8b3c784b35c3">
+
 
 Darish's Chat:
-<img width="960" alt="image" src="https://github.com/darishkhan/FakeChat/assets/93848997/492d55f4-0fc8-4787-a4b6-046b6c6b8d2e">
+<img width="960" alt="image" src="https://github.com/darishkhan/FakeChat/assets/93848997/e9f6011c-0585-4cd7-afc8-85e23411516c">
+
 
 
 
